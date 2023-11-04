@@ -1,18 +1,31 @@
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1>Mi Informacion</h1>
-    <ul>
-  <li>  Nombre: Javier</li>
-  <li>Apellido: Pereira</li>
-  <li>Cedula: 29858705</li>
-  <li>Seccion: 1</li>
-  <li>Materia: Programacion 3</li>
-  </ul>
- 
-  </body>
+<%- include('header') -%>
+<body>
+    
+    
+  <main>
+   <h1>Mis Datos Personales</h1>
+   <ul>
+      <table>
+        
+         <h2>Javier Pereira</h2>
+         <h2>Cedula: 29.858.705</h2>
+         <h2>Sección: 1</h2>
+        </table>
+     
+      <a href='/login' id='botonProductos'>Admin</a>
+   </ul>
+    
+  </main>
+
+     
+
+  
+
+   <%- include('footer') -%>
+  
+</body>
+
 </html>
