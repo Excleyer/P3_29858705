@@ -6,7 +6,7 @@ const fs = require('fs');
 const dbname = path.join(__dirname,'../db','base.db');
 const db = new sqlite3.Database(dbname,err=>{
   if(err) return console.error(err.message);
-  console.log('Conexion Exitosa con la Base de Datos')
+  console.log('Conexion Exitosa con la Base de Datoss')
 });
 
 db.serialize(() => {
