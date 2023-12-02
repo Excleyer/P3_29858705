@@ -11,7 +11,7 @@ main {
     color: white;
 }
 body{
-background-image:url('/img/almacen.jpg');
+background-image:url('/img/2.jpg');
 background-size:cover;
 background-attachment:fixed;
 }
@@ -30,7 +30,7 @@ table{
  width:100%;
 }
 h1{
-	color:rgb(255, 255, 255);
+	color:blue;
 	text-align:center;
 	margin-top:50px;
 	font-family: ru;
