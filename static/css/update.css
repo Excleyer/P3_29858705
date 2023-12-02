@@ -111,7 +111,7 @@ textarea {
 	   color: white;
    }
    body{
-   background-image:url('/img/almacen.jpg');
+   background-image:url('/img/4.jpg');
    background-size:cover;
    background-attachment:fixed;
    }
@@ -256,6 +256,7 @@ textarea {
 		color:white;
 	}
 	h1{
+		color: blue;
 		text-align:center;
 		font-weight: unset;
 	}
@@ -278,8 +279,8 @@ textarea {
 		form{
 			display: flex;
 			flex-direction: column;
-			margin:100px auto;
-			width:40%;
+			margin:46px auto;
+			width:81%;
 			background:rbg(0,0,0,.8);
 		}
 		input{
