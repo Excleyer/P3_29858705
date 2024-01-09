@@ -48,7 +48,13 @@ form {
 tr, th, td {
     height: 50px;
 }
-
+select{
+	width: 200px;
+    height: 40px;
+    background-color:  rgb(255 255 255 / 55%);
+    border: solid 2px rgb(4 0 255);
+    border-radius: 8px;
+}
 input {
     width: 200px;
     height: 40px;
@@ -182,9 +188,10 @@ textarea {
 	height:5vh;
    }
    header > h1 {
-   color: rgb(15, 14, 116);
-   font-family:'Rubik', sans-serif;
+   color: rgb(17, 75, 184);
+   font-family: 'Rubik', sans-serif;
    font-size: 40px;
+   margin-top: 0px
    }
    header > h1::first-letter{
 	   color: rgb(15, 14, 116);
