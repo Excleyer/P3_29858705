@@ -1,0 +1,117 @@
+body{
+	background-color: rgb(58, 140, 179);
+	background-image:url('/img/intro.webp');
+	background-size:cover;
+    background-attachment:fixed;
+	width:100%;
+	height:100vh;
+	font-family: Arial, Helvetica, sans-serif;
+}
+#login{
+	display:flex;
+	flex-direction:column;
+	justify-content: center;
+	align-items:center;
+	background:rgb(0,0,0,.3);
+	width: 43%;
+	height:42vh;
+	margin: auto;
+	border-radius:10px 10px 10px 10px;
+	border:1px solid black;
+	transition:all 1s;
+}
+#login:hover{
+	background:rgb(0,0,0,.7);
+	border:1px solid #0a080054;
+}
+label{
+	font-weight: bold;
+	font:30px 'dar';
+	color:white;
+	margin-bottom:10px;
+	margin-top:10px;
+}
+h1{
+	margin-top:70px;
+	text-align:center;
+	font-weight: unset;
+	color:white;
+	font:40px 'dar';
+}
+form{
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+input{
+padding:8px;
+text-align: center;
+}
+#iniciar{
+	margin-top: 20px;
+    padding: 3px;
+	border-radius:10px 10px 10px 10px;
+    transition:all 1s;
+}
+#iniciar:hover{
+
+transform:translateY(-10px);
+
+}
+
+#otroLogin{
+	border:1px solid black;
+	width:60%;
+	margin:50px auto;
+	background-color: #0a080054;
+	border-radius:15px 20px 15px 20px;
+	
+}
+#Javier{
+	border:1px solid black;
+	width:60%;
+	margin:50px auto;
+	background-color: #0a080054;
+	border-radius:15px 20px 15px 20px;
+	
+}
+
+a{
+	
+    text-rendering: auto;
+    color: fieldtext;
+    letter-spacing: normal;
+    word-spacing: normal;
+    line-height: normal;
+    text-transform: none;
+    text-indent: -5px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    appearance: auto;
+    -webkit-rtl-ordering: logical;
+    cursor: text;
+    background-color: field;
+    margin: 0em;
+    padding: 1px 0px;
+    border-width: 2px;
+    border-style: inset;
+    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+    border-image: initial;
+    padding-block: 1px;
+    padding-inline: 2px;
+    border-radius: 10px 10px 10px 10px;
+    padding: 8px;
+    text-align: center;
+    appearance: auto;
+    user-select: none;
+    align-items: flex-start;
+    text-align: center;
+    cursor: default;
+    box-sizing: border-box;
+    background-color: buttonface;
+    color: buttontext;
+    white-space: pre;
+    padding-block: 1px;
+	}

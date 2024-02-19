@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta charset="UTF-8">
+  <title>categoriass</title>
+  <link rel="stylesheet" type="text/css" href="/css/producto.css">
+  <link rel="icon" href="/img/descarga.jpg">
+</head>
+<header>
+ 
+  <h1>Confitería</h1>
+  <nav>
+    <ul> 
+      <li><a href="/addCategorias">Agregar Categoria</a></li>
+      <li><a href="/productos">Volver </a></li>
+    </ul>
+  </nav>
+ </header>
+<body>
+
+  <h1>Categorias </h1>
+  <div class="table">
+    <table border>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            
+          </tr>
+          <%for(const categorias of modelo){%>
+            <tr>
+              <td><%=categorias.id%></td>
+              <td><%=categorias.nombre%></td>
+              <td class="icon">
+
+              <a href="/updateCategoria/<%=categorias.id%>"><img src="/img/imagen.png" width="30"></a>
+              <a href="/eliminarCategoria/<%=categorias.id%>"><img src="img/borrar.jpg" width="30"></a>
+             </td>
+            </tr>
+           <%}%>
+        </table>
+       
+  </div>
+ 
+</body>
+</html>
