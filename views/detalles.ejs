@@ -7,13 +7,12 @@
         <meta name="author" content="" />
         <title>Confitería</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link rel="icon" href="/img/descarga.jpg">
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
 		<style type="text/css">
-			@font-face
-			{
+			@font-face{
 			   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
 				   src:url(/fuentes/HyperSuperFast.ttf);
 				  }
@@ -35,7 +34,46 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="/css/clientes.css" rel="stylesheet" />
-    </head>
+		<!------------------------------------------------------------------------------>
+    
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-JVLQFMWCBR"></script>
+		<!--Google Analytics-->
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag() {
+			dataLayer.push(arguments);
+		  }
+		  gtag('js', new Date());
+		  gtag('config', 'G-JVLQFMWCBR');
+		</script>
+		<!--Schema Markup-->
+		 <script type="application/ld+json">
+		  {
+			"@context": "https://schema.org",
+			"@type": "Article",
+			"headline": "Confiteria",
+			"datePublished": "2024-01-22",
+			"author": {
+			  "@type":"Person",
+			  "name": "Excleyer"
+			},
+			"publisher":{
+			  "@type": "Organization",
+			  "name": "Confiteria",
+			  "logo": {
+				"@type": "ImageObject",
+				"url": "https://images.pexels.com/photos/8853537/pexels-photo-8853537.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+			  }
+			},
+			"image": {
+			  "@type": "ImageObject",
+			  "url": "https://images.pexels.com/photos/8853537/pexels-photo-8853537.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+			  "width": "800",
+			  "height": "600"
+			},
+			"description": "Lo Mejor en productos de alta calidad"
+		  }
+		  </script>
 <body>
 
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
@@ -62,8 +100,8 @@
 <br>
 <h2>Detalles del Producto</h2>
    <div id='contenedor'>
-  <% for(let magui = 0;magui < imagenes.length;magui++){ %>
-   <img id='imgk' src="<%= imagenes[magui].url%>">
+  <% for(let javi = 0;javi < imagenes.length;javi++){ %>
+   <img id='imgk' src="<%= imagenes[javi].url%>">
   <% } %>
 
    </div>

@@ -11585,7 +11585,14 @@ font-size:5px;
   color:white;
   border:1px solid gold;
 }
-
+.estrellas{
+  display:flex;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+ }
+ .estrellas img{
+  transition: all 1s;
+ }
 
 }
 /*´------------------------´-------*/ 
