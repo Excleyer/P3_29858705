@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Registro</title>
+	<link rel="stylesheet" type="text/css" href="/css/loginuser.css">
+	<link rel="icon" href="/img/descarga.jpg">
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JVLQFMWCBR"></script>
+		<!--Google Analytics-->
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag() {
+			dataLayer.push(arguments);
+		  }
+		  gtag('js', new Date());
+		  gtag('config', 'G-JVLQFMWCBR');
+		</script>
+		<!--Schema Markup-->
+		 <script type="application/ld+json">
+		  {
+			"@context": "https://schema.org",
+			"@type": "Article",
+			"headline": "Confiteria",
+			"datePublished": "2024-01-22",
+			"author": {
+			  "@type":"Person",
+			  "name": "Excleyer"
+			},
+			"publisher":{
+			  "@type": "Organization",
+			  "name": "Confiteria",
+			  "logo": {
+				"@type": "ImageObject",
+				"url": "https://images.pexels.com/photos/8853537/pexels-photo-8853537.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+			  }
+			},
+			"image": {
+			  "@type": "ImageObject",
+			  "url": "https://images.pexels.com/photos/8853537/pexels-photo-8853537.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+			  "width": "800",
+			  "height": "600"
+			},
+			"description": "Lo Mejor en productos de alta calidad"
+		  }
+		  </script>
+</head>
+
+<body>
+	
+        <div id='Javier'>
+	<form action="/registroUsuariosPost" method="POST">
+        <h1>Ingresar Datos</h1>
+        
+		<label>Nombre</label>
+		<input type="text" name="nombre" required>
+
+        <label>Apellido</label>
+        <input type="text" name="apellido" required>
+
+        <label>Cedula</label>
+        <input type="number" name="cedula" required>
+
+        <label>Correo</label>
+        <input type="email" name="email" required>
+
+        <label>Contraseña</label>
+        <input type="password" name="contrasena" id='lastChild' required>
+
+        <div class="g-recaptcha" data-sitekey="6LeDsngpAAAAAK7e_1El8dMsaoHo3Sb3IWKlOjsV"></div>
+        <input type="submit" value='Registrar' id="registro">
+
+        <div id='etiquetaIniciarSesion'>
+         <p>Inicia sesion<a href="/loginUsers">Login</a></p>
+         
+        </div>
+       
+      
+</form>
+</body>
+</html>

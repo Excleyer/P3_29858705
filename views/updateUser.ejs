@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>UpdateUsers</title>
+	<link rel="stylesheet" type="text/css" href="/css/update.css">
+	<link rel="icon" href="/img/descarga.jpg">
+</head>
+<body>
+	<header>
+		<h1>Confiteria</h1>
+		<nav>
+		  <ul>
+			<li><a href="/usuarios">Volver </a></li>
+			
+			
+		  </ul>
+		</nav>
+	   </header>
+
+<main class="forms"> 
+
+<h1>Update Users</h1>
+
+<form action="/updateUser/<%=modelo.id%>" method="post">
+
+	<input type="text" name="nombre" value="<%=modelo.nombre%>">
+
+	<input type="text" name="apellido" value='<%=modelo.apellido%>'>
+
+	
+	<input type="number" name="cedula" value="<%=modelo.cedula%>">
+
+	<input type="email" name="correo" value="<%=modelo.correo%>">
+
+	<input type="password" name="password" value="<%=modelo.password%>">
+
+ 
+    	<input id='selectinput' type="submit" value='update'>
+	  
+  
+	
+</form>
+
+</main>
+</body>
+</html>
