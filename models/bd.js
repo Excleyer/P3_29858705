@@ -5,13 +5,37 @@ const fs = require('fs');
 const { secretKey,apiKeyy} = process.env;
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
+const ip = require('ip');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 // Crear la base de datos
 const dbname = path.join(__dirname,'../db','base.db');
 const db = new sqlite3.Database(dbname,{verbose:true,charset:'utf8'},err=>{
   if(err) return console.error(err.message);
   console.log('Conexion Exitosa con la Base de Datos')
 });
+//--------------------------------------------------------------------------------------
+//M. Bienvenida
+const transporter = nodemailer.createTransport({
+  service:'Gmail',
+  auth:{
+    user:'excleyerjavierpereira@gmail.com',
+    pass:'tvgwwlbkxcvpzpyi'
+  }
+});
 
+
+//M. recuperacion
+const transporter2 = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'excleyerjavierpereira@gmail.com',
+    pass: 'tvgwwlbkxcvpzpyi'
+  }
+});
+//------------------------------------------------------------------------------------------------
 db.serialize(() => {
 // Crear la tabla "categorias" si no existe
 db.run(`
@@ -89,6 +113,13 @@ BEGIN
     AND ip_cliente = new.ip_cliente;
 END;
 `);
+db.run(`CREATE TABLE IF NOT EXISTS puntuaciones (
+  puntuacionID INTEGER PRIMARY KEY AUTOINCREMENT,
+  nombre_de_usuario TEXT NOT NULL,
+  puntuacion INTEGER NOT NULL,
+  producto_id INTEGER,
+  FOREIGN KEY (producto_id) REFERENCES productos(producto_id)
+);`);
 
 });
 
@@ -151,7 +182,7 @@ function getImagen(req,res){
 const id = req.params.id; 
 const sql = `SELECT * FROM productos WHERE producto_id = ?`
 db.get(sql, [id], (err, row) => {
-  console.log(row,'+++++++++++++++');
+  console.log(row,'+++++++++++++++-funcion getImagen');
     if (err){
       res.status(500).send({ error: err.message });
       return console.error(err.message);
@@ -307,11 +338,20 @@ db.all(sql,[busqueda,busqueda,busqueda,busqueda,busqueda],(err,rows)=>{
 //-------------------------------------------------------
   function ClientesGET(req,res){
   
-  const sql =`SELECT p.*, i.url AS imagen_url
+  const sql =`SELECT p.*, i.url AS imagen_url, pu.puntuacion
+  FROM productos p
+  LEFT JOIN imagenes i ON p.producto_id = i.productoID
+  LEFT JOIN puntuaciones pu ON p.producto_id = pu.producto_id
+  WHERE i.destacado = 1
+  GROUP BY p.producto_id
+  ORDER BY pu.puntuacion DESC;
+  `;
+  /*`SELECT p.*, i.url AS imagen_url, pu.puntuacion
              FROM productos p
              LEFT JOIN imagenes i ON p.producto_id = i.productoID
+             LEFT JOIN puntuaciones pu ON p.producto_id = pu.producto_id
              WHERE i.destacado = 1
-             GROUP BY p.producto_id`;
+             GROUP BY p.producto_id` */
 
   db.all(sql,[],(err, rowsProduct) => {
 //-------------------------------------------
@@ -323,7 +363,12 @@ db.all(sql,[busqueda,busqueda,busqueda,busqueda,busqueda],(err,rows)=>{
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
       // Envío de la respuesta con los resultados
       res.render('clientes.ejs',{
-        producto:rowsProduct
+        producto:rowsProduct,
+        og: {
+     title: 'Confiteria',
+     description: 'Lo Mejor en productos de alta calidad',
+     image: 'https://pixnio.com/free-images/2020/09/01/2020-09-01-09-36-15-1152x768.jpg',
+     }
       });
       
 
@@ -348,30 +393,57 @@ function detalles(req,res){
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
       // Envío de la respuesta con los resultados
       res.render('detalles.ejs',{
-        imagenes:rowsImagenes
+        imagenes:rowsImagenes,
+        og: {
+     title: 'Confiteria',
+     description: 'Lo Mejor en productos de alta calidad',
+     image: 'https://pixnio.com/free-images/2020/09/01/2020-09-01-09-36-15-1152x768.jpg',
+     }
       });
 
   });
 }
 function deleteCategoriaGET(req,res){
 const id = req.params.id;
-const sql = ` DELETE FROM categorias WHERE id = ?`;
+const sql = `DELETE FROM productos WHERE categoria_id IN (SELECT id FROM categorias WHERE id = ?);`;
  db.run(sql, [id], err => {
     if (err) {
       res.status(500).send({ error: err.message });
       return console.error(err.message);
     }
+
+    const sql2=`DELETE FROM categorias WHERE id = ?`;
+
+    db.run(sql2,[id],er=>{
+    
+    if(er){
+       res.status(500).send({ error: err.message });
+       return console.error(err.message);
+    }
     console.log('Categoria eliminada');
     res.redirect('/categorias');
   });
+})
 }
 //--------------------------------------------------
 function loginUsers(req,res){
-  res.render('loginUsers.ejs');
+  res.render('loginUsers.ejs',{
+    og: {
+    title: 'Confiteria',
+    description: 'Lo Mejor en productos de alta calidad',
+    image: 'https://pixnio.com/free-images/2020/09/01/2020-09-01-09-36-15-1152x768.jpg',
+    }
+  });
 }
 //_-------------------------------------------------
 function registroUsers(req,res){
-  res.render('registroUsers.ejs');
+  res.render('registroUsers.ejs',{
+    og: {
+    title: 'Confiteria',
+    description: 'Lo Mejor en productos de alta calidad',
+    image: 'https://pixnio.com/free-images/2020/09/01/2020-09-01-09-36-15-1152x768.jpg',
+    }
+  });
 }
 //--------------------------------------------------
 function registroUsuariosPost(req,res){
@@ -385,6 +457,23 @@ function registroUsuariosPost(req,res){
  db.run(sql,[nombre,apellido,cedula,email,contrasena],e=>{
 
  if(e) return console.error(e.message);
+ const mensaje = {
+  from:'excleyerjavierpereira@gmail.com',
+  to:email,
+  subject:'!Bienvenido queridisimo usuario¡',
+  text:`Hola ${nombre} ${apellido}, !Nuestros esfuerzos son centrados en usuarios potenciales para la creacion de biodiversidad forestal , beneficiosa e inigualable.¡`
+  }
+
+  transporter.sendMail(mensaje,(error,info)=>{
+
+   if(error){
+   console.log(error.message);
+   }else{
+    console.log(`Mensaje de Bienvenida enviado Exitosamente ${info.response}`);
+   }
+
+  })
+ res.cookie('registro','exito',{httpOnly:true,secure:true});
  res.redirect('/loginUsers');
  });
 
@@ -410,6 +499,7 @@ if(datos){
 
  if(datos.correo == dato.email && datos.password == dato.password){
   dato.cedula=datos.cedula;
+  dato.nombre=datos.nombre;
   const token = jwt.sign({user:dato},secretKey,{expiresIn:60 * 60 * 24});
 
    // Guardar token en cookies
@@ -437,8 +527,8 @@ function comprar(req,res){
   //id del producto en cuestión
   const id = req.params.id;
   //Direccion IP
-  const ipAddress = req.ip;
-
+  //const ipAddress = req.ip;
+  const ipAddress = ip.address();
   console.log(typeof ipAddress);
 
   const sql=`SELECT usuarios.id, usuarios.nombre AS nombre_usuario, usuarios.apellido, usuarios.cedula, productos.*
@@ -452,7 +542,12 @@ console.log(data[0]);
 
  res.render('comprar.ejs',{
         resultado:data[0],
-        ip:{ipAddress,cedula}
+        ip:{ipAddress,cedula},
+        og: {
+          title: 'Confiteria',
+          description: 'Lo Mejor en productos de alta calidad',
+          image: 'https://pixnio.com/free-images/2020/09/01/2020-09-01-09-36-15-1152x768.jpg',
+          }
       });
 
 });
@@ -597,38 +692,162 @@ function deleteCompra(req,res){
     res.redirect('/compras');
   })
 }
+function puntuaciones(req,res){
+
+  const UserName = req.user.nombre;
+  
+  const {puntuacion,idProducto} = req.body;
+  
+  console.log(` puntuacion ${puntuacion} del producto con el id : ${idProducto} nombre del usuario ${UserName}`);
+  
+  const sql = `SELECT * FROM puntuaciones WHERE producto_id = ?`;
+  
+  db.get(sql,[idProducto],(error,datos)=>{
+  
+    // Obtener la puntuación actual del producto
+    //                               operador ternario
+    const puntuacionActual = datos ? datos.puntuacion : 0;
+     
+    // Calcular la nueva puntuación sumando la puntuación actual con la nueva puntuación
+    const nuevaPuntuacion = puntuacionActual + puntuacion;
+  
+  
+  if(puntuacionActual == 0){
+  
+    /////////////////////////////////////////////////////////
+  const sql2=`INSERT INTO puntuaciones (nombre_de_usuario,puntuacion,producto_id)
+  VALUES (?,?,?)`;
+  
+  db.run(sql2,[UserName,puntuacion,idProducto],(e)=>{
+  
+  if(e) return console.log(e.message);
+  
+  const sql3 = `SELECT * FROM puntuaciones WHERE producto_id = ?`;
+          db.get(sql3, [idProducto], (errorNew, datosNew) => {
+  
+            if (errorNew) return console.error(errorNew.message);
+            
+            console.log('Puntuación agregada:', puntuacion);
+  
+            res.json({puntuacion: datosNew.puntuacion});
+          });
+  
+  });
+  
+  }else{
+  
+      if(datos.nombre_de_usuario == UserName && datos.producto_id == idProducto){
+        console.log(`El usuario ${UserName} ya califico el producto`);
+       res.json({interruptor:true});
+      }else{
+       
+       // Actualizar la puntuación en la base de datos
+      const sqlUpdate = `UPDATE puntuaciones SET puntuacion = ?,nombre_de_usuario = ? WHERE producto_id = ?`;
+      db.run(sqlUpdate, [nuevaPuntuacion,UserName,idProducto], errorUpdate => {
+        if (errorUpdate) return console.error(errorUpdate.message);
+  
+        console.log(`Puntuación actualizada: ${nuevaPuntuacion}`);
+  
+        // Enviar la nueva puntuación al frontend
+        res.json({ puntuacion: nuevaPuntuacion,interruptor:false});
+      });
+  
+      }
+      
+  
+  }
+  
+  ///////////////////////////////////////////////////////
+  
+  });
+  
+  }
+  
+  function enviarEmailRecuperacion(req,res){
+    const email = req.body.email;
+  // Generar un token único
+    const token = crypto.randomBytes(20).toString('hex');
+  
+    // Almacenar el token en tu base de datos o en una estructura de datos adecuada junto con la información del usuario
+   res.cookie('securityToken',token, { httpOnly: true, secure: true });
+  
+    // Crear la URL de recuperación de contraseña
+    const recoveryURL = `https://confiteria-jp-8d50.onrender.com/restablecer?token=${token}`;
+  
+    // Enviar el correo electrónico de recuperación de contraseña
+    const mailOptions = {
+      from: 'excleyerjavierpereira@gmail.com',
+      to: email,
+      subject: 'Recuperación de contraseña',
+      text: `Haz clic en el siguiente enlace para restablecer tu contraseña: ${recoveryURL}`
+    };
+  
+    transporter2.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        res.send('Error al enviar el correo electrónico de recuperación de contraseña');
+      } else {
+        console.log('Correo electrónico de recuperación de contraseña enviado:', info.response);
+      }
+      
+  });
+    
+    res.redirect('/loginUsers');
+  
+  }
+  
+  function restablecerPost(req,res){
+  
+  const {passwordC,userName} = req.body;
+  
+  const sql = `UPDATE usuarios SET password = ? WHERE nombre = ?`;
+  
+  db.run(sql,[passwordC,userName],e=>{
+  
+   if(e){
+    console.error(e.message);
+   }else{
+    res.redirect('/loginUsers');
+   }
+  
+  })
+  
+  }
 //_-------------------------------------------------
 module.exports={
- aggDato,
- mostrarProductos,
- mostrarUpdate,
- update,
- mostrarDelete,
- deletee,
- aggIMG,
- getCategorias,
- postCategorias,
- mostrarUpdateC,
- updateCateg,
- filtrar,
- filtrar2,
- ClientesGET,
- getImagen,
- detalles,
- deleteCategoriaGET,
- loginUsers,
- registroUsers,
- registroUsuariosPost,
- postLoginCliente,
- comprar,
- comprarPOST,
- mostrarUsers,
- MostrarCompras,
- addUsers,
- addUsersPost,
- updateUser,
- updateUserPost,
- deleteUser,
- deleteCompra
-}
+  aggDato,
+  mostrarProductos,
+  mostrarUpdate,
+  update,
+  mostrarDelete,
+  deletee,
+  aggIMG,
+  getCategorias,
+  postCategorias,
+  mostrarUpdateC,
+  updateCateg,
+  filtrar,
+  filtrar2,
+  ClientesGET,
+  getImagen,
+  detalles,
+  deleteCategoriaGET,
+  loginUsers,
+  registroUsers,
+  registroUsuariosPost,
+  postLoginCliente,
+  comprar,
+  comprarPOST,
+  mostrarUsers,
+  MostrarCompras,
+  addUsers,
+  addUsersPost,
+  updateUser,
+  updateUserPost,
+  deleteUser,
+  deleteCompra,
+  puntuaciones,
+  enviarEmailRecuperacion,
+  restablecerPost
+ }
 
