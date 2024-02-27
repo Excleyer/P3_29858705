@@ -3,6 +3,7 @@
  padding:0;
  box-sizing:border-box;
 }
+
 main {
     display: flex;
     flex-direction: column;
@@ -85,6 +86,7 @@ header > h1 {
 color: rgb(17, 75, 184);
 font-family:'Rubik', sans-serif;
 font-size: 40px;
+margin-top:0px;
 }
 header > h1::first-letter{
 	color: rgb(15, 14, 116);
